@@ -3,16 +3,18 @@ package com.tcc.api.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.domain.model.Address;
 import com.tcc.domain.model.Client;
 
+
 @RestController
 public class ClientController {
 	
-		
+	//@CrossOrigin(origins = "http://localhost:8080")
 	@GetMapping("/clients")
 	public List<Client> list() throws Exception {
 		var cliente1 = new Client();
@@ -48,5 +50,18 @@ public class ClientController {
 		return Arrays.asList(cliente1,cliente2);
 		
 	}
+	
+//	@CrossOrigin(origins = "http://localhost:8080")
+//	@GetMapping("/client")
+//	public String clientForm(Model model) {
+//		model.addAttribute("client", new Client());
+//		return "clientForm";
+//	}
+//	
+//	@PostMapping("/clientForm")
+//	public String clientSubmit(@ModelAttribute Client client, Model model) {
+//		model.addAttribute("client", client);
+//		return "clientCreated";
+//	}
 
 }
