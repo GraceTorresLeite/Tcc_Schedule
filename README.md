@@ -7,7 +7,7 @@
 |        |Html       |Java 11    |JPA       |Github        |Junit      |           |
 |        |Css        |Rest       |          |              |Postman    |           |
 |        |JavaScript |           |          |              |TDD        |           |
-|        |           |SpringBoot |          |              |           |           |
+|        |Thymeleaf  |SpringBoot |          |              |           |           |
 |        |           |           |          |              |           |           |
 
 ## Objetivo
