@@ -1,23 +1,38 @@
 package com.tcc.domain.model;
 
-public class Client {
+import java.io.Serializable;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
+public class Client implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String name;
 	
+	@Email
+	@NotEmpty
 	private String email;
 	
+	@Pattern(regexp="(\\d{2})\\d{4}-\\d{4}")
 	private String phone;
 	
 	private Address address;
 
 	public Client() {
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.address = address;
+	
 	}
 
 	public Long getId() {
