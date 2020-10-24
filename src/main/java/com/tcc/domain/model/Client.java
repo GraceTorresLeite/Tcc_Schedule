@@ -2,6 +2,8 @@ package com.tcc.domain.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+@Entity
 public class Client implements Serializable{
 	
 	/**
@@ -29,7 +32,8 @@ public class Client implements Serializable{
 	@Pattern(regexp="(\\d{2})\\d{4}-\\d{4}")
 	private String phone;
 	
-	private Address address;
+	@Column(name="address_id")
+	private String address;
 
 	public Client() {
 	
@@ -67,12 +71,47 @@ public class Client implements Serializable{
 		this.phone = phone;
 	}
 
-	public Address getAddress() {
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Client other = (Client) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", address=" + address
+				+ "]";
+	}
+	
+	
+	
+	
 	
 }
