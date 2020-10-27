@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
@@ -23,13 +26,15 @@ public class Client implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank   // não aceita null , em branco ou vazio
 	private String name;
 	
 	@Email
 	@NotEmpty
 	private String email;
 	
-	@Pattern(regexp="(\\d{2})\\d{4}-\\d{4}")
+	//@Pattern(regexp="(\\d{2})\\d{4}-\\d{5}")
+	@Min(11)
 	private String phone;
 	
 	@Column(name="address_id")
