@@ -2,6 +2,7 @@ package com.tcc.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Schedule {
@@ -21,8 +23,8 @@ public class Schedule {
 	@ManyToOne
 	private Client client;
 	
-	@ManyToOne
-	private ServiceType serviceType;
+	@OneToMany
+	private List<ServiceType> serviceType;
 	
 	private BigDecimal total;
 	
@@ -31,6 +33,14 @@ public class Schedule {
 	
 	private LocalDateTime dateSchedule;
 	
+	
+	public Schedule() {
+		this.statusSchedule = statusSchedule.ABERTO;
+		this.dateSchedule = LocalDateTime.now();
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -43,10 +53,10 @@ public class Schedule {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	public ServiceType getServiceType() {
+	public List<ServiceType> getServiceType() {
 		return serviceType;
 	}
-	public void setServiceType(ServiceType serviceType) {
+	public void setServiceType(List<ServiceType> serviceType) {
 		this.serviceType = serviceType;
 	}
 	public BigDecimal getTotal() {
