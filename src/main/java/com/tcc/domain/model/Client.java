@@ -1,122 +1,55 @@
 package com.tcc.domain.model;
 
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
-public class Client implements Serializable{
+public class Client extends Person{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY, optional = true)
+	private Address address;
 	
-	@NotBlank   // não aceita null , em branco ou vazio
-	private String name;
+	@Transient
+	private Set<Schedule> schedule = new LinkedHashSet<>();
 	
-	@Email
-	@NotEmpty
-	private String email;
 	
-	//@Pattern(regexp="(\\d{2})\\d{4}-\\d{5}")
-	@Min(11)
-	private String phone;
-	
-	@Column(name="address_id")
-	private String address;
 
-	public Client() {
-	
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+	public Set<Schedule> getSchedule() {
+		return schedule;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Client other = (Client) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+	public void setSchedule(Set<Schedule> schedule) {
+		this.schedule = schedule;
+	}
+	
+	public void addSchedule(Schedule schedule) {
+		if(this.schedule == null) {
+			this.schedule = new HashSet<>(); 
+			this.schedule.add(schedule);
+			schedule.setClient(this);
+		}
 	}
 
-	@Override
-	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", address=" + address
-				+ "]";
-	}
-	
-	
-	
-	
-	
+
 }

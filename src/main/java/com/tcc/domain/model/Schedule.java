@@ -1,9 +1,12 @@
 package com.tcc.domain.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,72 +15,80 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Schedule {
+public class Schedule extends BaseEntity{
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
-	@ManyToOne
+	@Column(name="client_id")
 	private Client client;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "schedule")
+	@Column(name="service_type_id")
 	private List<ServiceType> serviceType;
 	
-	private BigDecimal total;
+	@Future
+	@NotNull
+	@Column(name = "schedule_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime scheduleDate;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="status_schedule")
 	private StatusSchedule statusSchedule;
 	
-	private LocalDateTime dateSchedule;
-	
+
+	@Column(name = "description")
+	private String description;
 	
 	public Schedule() {
 		this.statusSchedule = statusSchedule.ABERTO;
-		this.dateSchedule = LocalDateTime.now();
+		this.scheduleDate = LocalDateTime.of(null, null);
 	}
 
-
-
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public Client getClient() {
 		return client;
 	}
+
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
 	public List<ServiceType> getServiceType() {
 		return serviceType;
 	}
+
 	public void setServiceType(List<ServiceType> serviceType) {
 		this.serviceType = serviceType;
 	}
-	public BigDecimal getTotal() {
-		return total;
+
+	public LocalDateTime getScheduleDate() {
+		return scheduleDate;
 	}
-	public void setTotal(BigDecimal total) {
-		this.total = total;
+
+	public void setScheduleDate(LocalDateTime scheduleDate) {
+		this.scheduleDate = scheduleDate;
 	}
+
 	public StatusSchedule getStatusSchedule() {
 		return statusSchedule;
 	}
+
 	public void setStatusSchedule(StatusSchedule statusSchedule) {
 		this.statusSchedule = statusSchedule;
 	}
-	public LocalDateTime getDateSchedule() {
-		return dateSchedule;
-	}
-	public void setDateSchedule(LocalDateTime dateSchedule) {
-		this.dateSchedule = dateSchedule;
-	}
-	
-	
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 }
