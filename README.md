@@ -4,13 +4,13 @@
 ## *branch versao2 implementando SpringRest*
 
 ## Mapa de Tecnologias
-|App     |Front      |Back       |BD        |Versionamento |Qualidade  |Segurança  |
-|--------|-----------|-----------|----------|--------------|-----------|-----------|
-|        |Html       |Java 11    |JPA       |Github        |Junit      |           |
-|        |Css        |Rest       |          |              |Postman    |           |
-|        |JavaScript |           |          |              |TDD        |           |
-|        |Thymeleaf  |SpringBoot |          |              |           |           |
-|        |           |           |          |              |           |           |
+|Framework |Front      |Back       |BD        |Versionamento |Qualidade  |Segurança  |
+|----------|-----------|-----------|----------|--------------|-----------|-----------|
+|Spring    |Html       |Java 11    |JPA       |Github        |Junit      |           |
+|Hibernate |Css        |Rest       |MySQL     |              |Postman    |           |
+|Eclipse   |JavaScript |           |          |              |TDD        |           |
+|          |Thymeleaf  |           |          |              |           |           |
+|          |           |           |          |              |           |           |
 
 ## Objetivo
 
