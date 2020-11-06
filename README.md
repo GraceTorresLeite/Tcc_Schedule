@@ -7,7 +7,7 @@
 |Framework |Front      |Back       |BD        |Versionamento |Qualidade  |Segurança  |
 |----------|-----------|-----------|----------|--------------|-----------|-----------|
 |Spring    |Html       |Java 11    |JPA       |Github        |Junit      |           |
-|Hibernate |Css        |Rest       |MySQL     |              |Postman    |           |
+|Hibernate |Css        |           |MySQL     |              |Postman    |           |
 |Eclipse   |JavaScript |           |          |              |TDD        |           |
 |          |Thymeleaf  |           |          |              |           |           |
 |          |           |           |          |              |           |           |
