@@ -1,68 +1,86 @@
 package com.tcc.api.controller;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tcc.domain.model.Address;
+import com.tcc.domain.exception.NegocioException;
 import com.tcc.domain.model.Client;
-import com.tcc.repository.ClientRepository;
+import com.tcc.domain.service.AddressService;
+import com.tcc.domain.service.ClientService;
 
-
-@RestController
+@Controller
 public class ClientController {
+
+	@Autowired
+	private ClientService clientService;
 	
 	@Autowired
-	private ClientRepository clientRepository;
+	private AddressService addressService;
 	
+	private static final String VIEWS_CLIENT_CREATE_OR_UPDATE_FORM = "clients/createOrUpdateClientForm";
 	
-	//@CrossOrigin(origins = "http://localhost:8080")
 	@GetMapping("/clients")
-	public List<Client> list() throws Exception {
-		var cliente1 = new Client();
-		cliente1.setId(1L);
-		cliente1.setName("João");
-		cliente1.setEmail("joao@joao.com");
-		cliente1.setPhone("00000");
-				
-		Address address1 = new Address();	
-		address1.setCep("91230-210"); 
-		address1.setNumber("2");
-		address1.setComplemento("apto 101 bloc c");
-					
-		cliente1.setAddress(address1);
-		
-		var cliente2 = new Client();
-		cliente2.setId(2L);
-		cliente2.setName("Maria");
-		cliente2.setEmail("maria@maria.com");
-		cliente2.setPhone("00000");
-		
-		Address address2 = new Address();
-		address2.setCep("92000-000");
-		address2.setNumber("7");
-		address2.setComplemento("quadra C");
-		
-		cliente2.setAddress(address2);
-			
-		return Arrays.asList(cliente1,cliente2);
+	public String listClient(Model model){
+		model.addAttribute("clientList",clientService.listClient());
+		return "/listClient";
 		
 	}
 	
-//	@CrossOrigin(origins = "http://localhost:8080")
-//	@GetMapping("/client")
-//	public String clientForm(Model model) {
-//		model.addAttribute("client", new Client());
-//		return "clientForm";
-//	}
-//	
-//	@PostMapping("/clientForm")
-//	public String clientSubmit(@ModelAttribute Client client, Model model) {
-//		model.addAttribute("client", client);
-//		return "clientCreated";
-//	}
+	@GetMapping("/{clientId}")
+	public String getClient(@PathVariable Integer clientId, Model model) {
+		ResponseEntity<Client> client =clientService.getClient(clientId);
+		model.addAttribute("client", client );
+		return "clientDetails";
+			
+	}
+	
+	@PostMapping("/clients/new")
+	@ResponseStatus(HttpStatus.CREATED)
+	public String addClient(@Valid @RequestBody Client client, Model model) {
+		 clientService.save(client);
+		 model.addAttribute("client", client);
+		 return VIEWS_CLIENT_CREATE_OR_UPDATE_FORM;
+		
+	}
+	
+	@PutMapping("/{clientId}")
+	public String update(@Valid @PathVariable Integer clientId, 
+			@RequestBody Client client, Model model){
+		
+		if(!clientService.getClient(clientId).equals(client)) {
+			throw new NegocioException("Este cliente não possui cadastro");
+		}
+		client.setId(clientId);
+		client= clientService.save(client);
+		ResponseEntity.ok(client);
+		return VIEWS_CLIENT_CREATE_OR_UPDATE_FORM;
+	
+	}
+	
+	
+	@DeleteMapping("/{clientId}")
+	public String delete(@PathVariable Integer clientId, Client client){
+		if(!clientService.getClient(clientId).equals(client)) {
+			throw new NegocioException("Este cliente não possui cadastro");
+		}
+		clientService.delete(clientId);
+		ResponseEntity.noContent().build();
+		return "/client/listClient";
+		
+	}
 
 }

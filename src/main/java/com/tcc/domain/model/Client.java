@@ -1,71 +1,31 @@
 package com.tcc.domain.model;
 
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
-public class Client implements Serializable{
+@Entity
+public class Client extends Person{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String name;
-	
-	@Email
-	@NotEmpty
-	private String email;
-	
-	@Pattern(regexp="(\\d{2})\\d{4}-\\d{4}")
-	private String phone;
-	
+	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL,
+			fetch = FetchType.LAZY, optional = true)
 	private Address address;
-
-	public Client() {
 	
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	@Transient
+	private Set<Schedule> schedule = new LinkedHashSet<>();
+	
+	
 
 	public Address getAddress() {
 		return address;
@@ -74,5 +34,22 @@ public class Client implements Serializable{
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
+	public Set<Schedule> getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(Set<Schedule> schedule) {
+		this.schedule = schedule;
+	}
 	
+	public void addSchedule(Schedule schedule) {
+		if(this.schedule == null) {
+			this.schedule = new HashSet<>(); 
+			this.schedule.add(schedule);
+			schedule.setClient(this);
+		}
+	}
+
+
 }
